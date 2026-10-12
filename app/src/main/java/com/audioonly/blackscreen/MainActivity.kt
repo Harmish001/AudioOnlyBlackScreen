@@ -50,16 +50,20 @@ class MainActivity : Activity() {
             setTextColor(android.graphics.Color.LTGRAY)
             setPadding(0, dp(12), 0, dp(28))
         }, match())
-        root.addView(button("Start black screen") { startBlackScreen() }, match())
+        val startBtn = button("Start black screen") { startBlackScreen() }
+        root.addView(startBtn, match())
         root.addView(button("Turn off black screen (PIN)") { openUnlock() }, match())
         root.addView(button("Allow overlay permission") { requestOverlayPermission() }, match())
         root.addView(TextView(this).apply {
-            text = "How to use\n1. Start music in your usual app.\n2. Return here and start the black screen.\n3. Use the persistent notification or reopen this app to unlock with your parent PIN.\n\nTV note: overlay permission availability varies by TV brand."
+            text = "How to use\n1. Start music in your usual app.\n2. Return here and start the black screen.\n3. Unhide screen:\n   • Mobile: Double tap anywhere to enter PIN.\n   • Android TV: Navigate to the cross button (✕) with remote and press OK.\n4. You can also use the persistent notification to unlock.\n\nTV note: overlay permission availability varies by TV brand."
             textSize = 14f
             setTextColor(android.graphics.Color.GRAY)
             setPadding(0, dp(24), 0, 0)
         }, match())
         setContentView(root)
+        if (DeviceUtils.isTv(this)) {
+            startBtn.requestFocus()
+        }
     }
 
     private fun startBlackScreen() {
